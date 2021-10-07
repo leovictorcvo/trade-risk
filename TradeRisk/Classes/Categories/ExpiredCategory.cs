@@ -8,8 +8,8 @@ namespace TradeRisk.Classes.Categories
     {
         const int MIN_DAYS_TO_BE_EXPIRED = 30;
         public override string ToString() => Constants.EXPIRED;
-        public bool IsTradeFromThisRiskCategory(ITrade trade, DateTime referenceDate) => 
+        public bool IsTradeFromThisRiskCategory(ITrade trade, DateTime referenceDate) =>
             (referenceDate - trade.NextPaymentDate).Days > MIN_DAYS_TO_BE_EXPIRED;
-        
+
     }
 }

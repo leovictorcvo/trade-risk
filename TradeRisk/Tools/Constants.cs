@@ -1,6 +1,6 @@
 ﻿namespace TradeRisk.Tools
 {
-    static class Constants
+    public static class Constants
     {
         public const string EXPIRED = "EXPIRED";
         public const string HIGH_RISK = "HIGHRISK";

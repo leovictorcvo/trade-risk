@@ -9,9 +9,17 @@ namespace TradeRisk
     {
         static void Main(string[] args)
         {
-
-            (DateTime referenceDate, List<Trade> trades) = ShowInstructionsAndGetData();
-            ShowTradeCategories(trades, referenceDate);
+            try
+            {
+                (DateTime referenceDate, List<Trade> trades) = ShowInstructionsAndGetData();
+                ShowTradeCategories(trades, referenceDate);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*******");
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine("*******");
+            }
         }
 
         static (DateTime, List<Trade>) ShowInstructionsAndGetData()
@@ -43,7 +51,7 @@ namespace TradeRisk
         {
             trades.ForEach(trade =>
             {
-                Console.WriteLine(trade.RiskCategory(referenceDate)?.ToString() ?? Tools.Constants.NOT_CATEGORIZED);
+                Console.WriteLine(trade.RiskCategory(referenceDate));
             });
         }
     }

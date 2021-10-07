@@ -4,8 +4,15 @@ using TradeRisk.Interfaces;
 
 namespace TradeRisk.Classes
 {
-    class Trade : ITrade
+    public class Trade : ITrade
     {
+        private enum recordPositions
+        {
+            value = 0,
+            clientSector = 1,
+            nextPaymentDate = 2
+        };
+
         private readonly double _value;
         private readonly string _clientSector;
         private readonly DateTime _nextPaymentDate;
@@ -18,16 +25,20 @@ namespace TradeRisk.Classes
 
         public Trade(string tradeRecord)
         {
-            var values = tradeRecord.Split(' ');
-            _value = double.Parse(values[0]);
-            _clientSector = values[1];
-            _nextPaymentDate = DateTime.ParseExact(values[2], "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            try
+            {
+                var values = tradeRecord.Split(' ');
+                _value = double.Parse(values[(int)recordPositions.value]);
+                _clientSector = values[(int)recordPositions.clientSector];
+                _nextPaymentDate = DateTime.ParseExact(values[(int)recordPositions.nextPaymentDate], "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException($"Invalid record format: {tradeRecord}");
+            }
         }
 
-        public ITradeRiskCategory RiskCategory(DateTime referenceDate)
-        {
-            var riskCategoryFactory = new RiskCategoryFactory();
-            return riskCategoryFactory.GetRiskCategory(this, referenceDate);
-        }
+        public string RiskCategory(DateTime referenceDate) =>
+            RiskCategoryFactory.Instance.GetRiskCategory(this, referenceDate)?.ToString() ?? Tools.Constants.NOT_CATEGORIZED;
     }
 }
