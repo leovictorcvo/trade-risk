@@ -10,16 +10,11 @@ namespace TradeRisk
         static void Main(string[] args)
         {
 
-            var riskCategoryFactory = new RiskCategoryFactory();
-            (DateTime referenceDate, int numberOfTradesInPortfolio, List<Trade> trades) = ShowInstructionsAndGetData();
-            trades.ForEach(trade =>
-            {
-                var category = riskCategoryFactory.GetRiskCategory(trade, referenceDate);
-                Console.WriteLine(category?.Description ?? "NOT CATEGORIZED");
-            });
+            (DateTime referenceDate, List<Trade> trades) = ShowInstructionsAndGetData();
+            ShowTradeCategories(trades, referenceDate);
         }
 
-        static (DateTime, int, List<Trade>) ShowInstructionsAndGetData()
+        static (DateTime, List<Trade>) ShowInstructionsAndGetData()
         {
             string answer;
             DateTime referenceDate;
@@ -42,7 +37,16 @@ namespace TradeRisk
                 answer = Console.ReadLine();
                 trades.Add(new Trade(answer));
             }
-            return (referenceDate, numberOfTradesInPortfolio, trades);
+            return (referenceDate, trades);
+        }
+        static void ShowTradeCategories(List<Trade> trades, DateTime referenceDate)
+        {
+            var riskCategoryFactory = new RiskCategoryFactory();
+            trades.ForEach(trade =>
+            {
+                var category = riskCategoryFactory.GetRiskCategory(trade, referenceDate);
+                Console.WriteLine(category?.ToString() ?? Tools.Constants.NOT_CATEGORIZED);
+            });
         }
     }
 }
