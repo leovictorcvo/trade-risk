@@ -11,7 +11,7 @@ namespace TradeRisk
         {
             try
             {
-                (DateTime referenceDate, List<Trade> trades) = ShowInstructionsAndGetData();
+                (DateTime referenceDate, Trade[] trades) = ShowInstructionsAndGetData();
                 ShowTradeCategories(trades, referenceDate);
             }
             catch (Exception ex)
@@ -22,12 +22,12 @@ namespace TradeRisk
             }
         }
 
-        static (DateTime, List<Trade>) ShowInstructionsAndGetData()
+        static (DateTime, Trade[]) ShowInstructionsAndGetData()
         {
             string answer;
             DateTime referenceDate;
             int numberOfTradesInPortfolio;
-            List<Trade> trades;
+            Trade[] trades;
 
             Console.Clear();
             Console.WriteLine("Trade risk calculator");
@@ -44,21 +44,21 @@ namespace TradeRisk
             {
                 throw new ArgumentException("Invalid number of trades");
             }
-            trades = new List<Trade>();
+            trades = new Trade[numberOfTradesInPortfolio];
             for (int tradeNumber = 0; tradeNumber < numberOfTradesInPortfolio; tradeNumber++)
             {
                 Console.Write($"Trade info {tradeNumber + 1} of {numberOfTradesInPortfolio}: ");
                 answer = Console.ReadLine();
-                trades.Add(new Trade(answer));
+                trades[tradeNumber] = new Trade(answer);
             }
             return (referenceDate, trades);
         }
-        static void ShowTradeCategories(List<Trade> trades, DateTime referenceDate)
+        static void ShowTradeCategories(Trade[] trades, DateTime referenceDate)
         {
-            trades.ForEach(trade =>
+            foreach(Trade trade in trades)
             {
                 Console.WriteLine(trade.RiskCategory(referenceDate));
-            });
+            };
         }
     }
 }
