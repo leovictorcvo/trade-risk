@@ -23,5 +23,11 @@ namespace TradeRisk.Classes
             _clientSector = values[1];
             _nextPaymentDate = DateTime.ParseExact(values[2], "MM/dd/yyyy", CultureInfo.InvariantCulture);
         }
+
+        public ITradeRiskCategory RiskCategory(DateTime referenceDate)
+        {
+            var riskCategoryFactory = new RiskCategoryFactory();
+            return riskCategoryFactory.GetRiskCategory(this, referenceDate);
+        }
     }
 }

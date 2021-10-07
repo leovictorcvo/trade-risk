@@ -41,11 +41,9 @@ namespace TradeRisk
         }
         static void ShowTradeCategories(List<Trade> trades, DateTime referenceDate)
         {
-            var riskCategoryFactory = new RiskCategoryFactory();
             trades.ForEach(trade =>
             {
-                var category = riskCategoryFactory.GetRiskCategory(trade, referenceDate);
-                Console.WriteLine(category?.ToString() ?? Tools.Constants.NOT_CATEGORIZED);
+                Console.WriteLine(trade.RiskCategory(referenceDate)?.ToString() ?? Tools.Constants.NOT_CATEGORIZED);
             });
         }
     }
