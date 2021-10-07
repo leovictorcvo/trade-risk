@@ -9,6 +9,6 @@ namespace TradeRisk.Classes.Categories
         const double MIN_VALUE_TO_BE_HIGHRISK = 1_000_000;
         public override string ToString() => Constants.HIGH_RISK;
         public bool IsTradeFromThisRiskCategory(ITrade trade, DateTime referenceDate) =>
-            trade.Value > MIN_VALUE_TO_BE_HIGHRISK && trade.ClientSector.ToLower().Equals("private");
+            trade.Value > MIN_VALUE_TO_BE_HIGHRISK && trade.ClientSector.Equals(Constants.PRIVATE_SECTOR);
     }
 }

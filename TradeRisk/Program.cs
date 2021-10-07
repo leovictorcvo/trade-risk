@@ -32,12 +32,18 @@ namespace TradeRisk
             Console.Clear();
             Console.WriteLine("Trade risk calculator");
             Console.WriteLine("---------------------");
-            Console.Write("Reference date: ");
+            Console.Write("Reference date (mm/dd/yyyy): ");
             answer = Console.ReadLine();
-            referenceDate = DateTime.ParseExact(answer, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            if (!DateTime.TryParseExact(answer, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out referenceDate))
+            {
+                throw new ArgumentException("Invalid reference date");
+            }
             Console.Write("Number of trades in portfolio: ");
             answer = Console.ReadLine();
-            numberOfTradesInPortfolio = int.Parse(answer);
+            if (!int.TryParse(answer, out numberOfTradesInPortfolio))
+            {
+                throw new ArgumentException("Invalid number of trades");
+            }
             trades = new List<Trade>();
             for (int tradeNumber = 0; tradeNumber < numberOfTradesInPortfolio; tradeNumber++)
             {
